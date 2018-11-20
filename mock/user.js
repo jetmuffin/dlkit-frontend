@@ -81,6 +81,22 @@ export default {
       });
       return;
     }
+    if (password === '888888' && userName === 'test') {
+      res.send({
+        status: 'ok',
+        type,
+        currentAuthority: 'test',
+      });
+      return;
+    }
+    if (password === '888888' && userName === 'jetmuffin') {
+      res.send({
+        status: 'ok',
+        type,
+        currentAuthority: 'jetmuffin',
+      });
+      return;
+    }
     if (password === '123456' && userName === 'user') {
       res.send({
         status: 'ok',

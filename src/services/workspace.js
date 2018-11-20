@@ -1,8 +1,14 @@
 import request from '@/utils/request';
+import { getAuthority } from '@/utils/authority';
 
 export async function queryWorkspaces() {
-  return request('http://dlkit.njuics.cn/apis/workspace',{
+  const userName = getAuthority();
+  debugger
+  return request('/apis/workspace',{
     method: 'GET',
+    headers: {
+      'User': 'test'
+    }
   });
 }
 

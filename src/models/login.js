@@ -46,7 +46,8 @@ export default {
             return;
           }
         }
-        yield put(routerRedux.replace(redirect || '/'));
+        debugger
+        yield put(routerRedux.replace(redirect||'/dashboard/workspace'));
       }
     },
 
