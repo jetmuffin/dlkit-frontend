@@ -12,8 +12,10 @@ export default {
 
   effects: {
     *fetchLog({ payload }, { call,put }){
-      const response = yield call(queryLogs,payload);
+      const response = yield call(queryLogs,payload.name);
       const { log } = response;
+      debugger
+      payload.callback(log);
       yield put({
         type: 'queryLog',
         payload: Array.isArray(log) ? log : []

@@ -63,7 +63,7 @@ class JobList extends PureComponent {
   },{
     title: 'log',
     key: 'log',
-    render: (record)=><a href="javascript:void(0);" onClick={this.logInfo(record.name)}>log</a>
+    render: name=><a href="javascript:void(0);" onClick={this.showLog(name)}>log</a>
   }]
 
   componentDidMount() {
@@ -75,29 +75,35 @@ class JobList extends PureComponent {
   }
 
   podInfo = (item) => {
-    debugger
     Modal.info({
       title: 'Pods list',
-      content: <Table dataSource={item.pods} columns={this.columns} />
+      content: <Table dataSource={item.pods} columns={this.columns}  rowKey={(item)=>item.name}/>
     })
   }
 
-  logInfo = (podName) => () => {
-    const {log,dispatch} = this.props;
-    dispatch({
-      type: 'job/fetchLog',
-      payload: podNmae
-    })
+  logInfo = (log) => {
     Modal.info({
       title: 'Log',
       content:     <List
       size="small"
-      header={<div>Log</div>}
+      header={<div>Log start</div>}
       footer={<div>Bottom</div>}
       bordered
       dataSource={log}
       renderItem={item => (<List.Item>{item}</List.Item>)}
     />
+    })
+  }
+
+  showLog = (pod) => () => {
+    const {dispatch} = this.props;
+    const load = {
+      name: pod.name,
+      callback: this.logInfo
+    }
+    dispatch({
+      type: 'job/fetchLog',
+      payload: load
     })
   }
 

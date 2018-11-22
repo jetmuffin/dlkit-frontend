@@ -7,7 +7,7 @@ export async function queryWorkspaces() {
   return request('/apis/workspace',{
     method: 'GET',
     headers: {
-      'User': 'jetmuffin'
+      'User': 'test'
     }
   });
 }
@@ -16,7 +16,7 @@ export async function createWorkspace(params) {
   return request('/apis/workspace',{
     method: 'POST',
     headers: {
-      'User': 'jetmuffin'
+      'User': 'test'
     },
     body: params
   });
@@ -26,7 +26,7 @@ export async function deleteWorkspace(params) {
   return request(`/apis/workspace/${params}`,{
     method: 'DELETE',
     headers: {
-      'User': 'jetmuffin'
+      'User': 'test'
     }
   });
 }
@@ -35,7 +35,7 @@ export async function putWorkspace(params) {
   return request(`/apis/workspace/${params}`,{
     method: 'PUT',
     headers: {
-      'User': 'jetmuffin'
+      'User': 'test'
     }
   });
 }
