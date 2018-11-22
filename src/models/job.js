@@ -1,19 +1,31 @@
 import { queryFakeList, removeFakeList, addFakeList, updateFakeList } from '@/services/api';
+import { queryJobs, queryLogs } from '../services/job';
 
 export default {
-  namespace: 'list',
+  namespace: 'job',
 
   state: {
+    log: [],
     list: [],
+    workspace: "",
   },
 
   effects: {
+    *fetchLog({ payload }, { call,put }){
+      const response = yield call(queryLogs,payload);
+      const { log } = response;
+      yield put({
+        type: 'queryLog',
+        payload: Array.isArray(log) ? log : []
+      })
+    },
     *fetch({ payload }, { call, put }) {
+      const response = yield call(queryJobs, payload);
+      const { jobStatuses } = response;
       debugger
-      const response = yield call(queryFakeList, payload);
       yield put({
         type: 'queryList',
-        payload: Array.isArray(response) ? response : [],
+        payload: Array.isArray(jobStatuses) ? jobStatuses : [],
       });
     },
     *appendFetch({ payload }, { call, put }) {
@@ -39,6 +51,18 @@ export default {
   },
 
   reducers: {
+    setWorkspace(state, action){
+        return {
+            ...state,
+            workspace: action.payload
+        }
+    },
+    queryLog(state,action) {
+      return {
+        ...state,
+        log: action.payload
+      }
+    },
     queryList(state, action) {
       return {
         ...state,

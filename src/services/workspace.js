@@ -7,26 +7,35 @@ export async function queryWorkspaces() {
   return request('/apis/workspace',{
     method: 'GET',
     headers: {
-      'User': 'test'
+      'User': 'jetmuffin'
     }
   });
 }
 
 export async function createWorkspace(params) {
-  return request('http://dlkit.njuics.cn/apis/workspace',{
+  return request('/apis/workspace',{
     method: 'POST',
+    headers: {
+      'User': 'jetmuffin'
+    },
     body: params
   });
 }
 
 export async function deleteWorkspace(params) {
-  return request(`http://dlkit.njuics.cn/apis/workspace/${params}`,{
+  return request(`/apis/workspace/${params}`,{
     method: 'DELETE',
+    headers: {
+      'User': 'jetmuffin'
+    }
   });
 }
 
 export async function putWorkspace(params) {
-  return request(`http://dlkit.njuics.cn/apis/workspace/${params}`,{
+  return request(`/apis/workspace/${params}`,{
     method: 'PUT',
+    headers: {
+      'User': 'jetmuffin'
+    }
   });
 }

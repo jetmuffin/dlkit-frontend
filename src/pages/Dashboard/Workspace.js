@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import { Table, Button, Modal, Form, Select, InputNumber, Col, Input } from 'antd';
+import { Table, Button, Modal, Form, Select, InputNumber, Col, Input, Divider } from 'antd';
 import { connect } from 'dva';
+import Link from 'umi/link';
 
 class SizeUnit extends Component{
     constructor(props) {
@@ -98,11 +99,18 @@ const mapDispatchToProps = (dispatch) => {
             payload: params
         })
     }
+    const setWorkspace = (params) => {
+        dispatch({
+            type: "job/setWorkspace",
+            payload: params
+        })
+    }
     return {
         queryWorkspaceList,
         createNewWorkspace,
         deleteWorkspace,
-        putWorkspace
+        putWorkspace,
+        setWorkspace
     }
 }
 
@@ -124,8 +132,13 @@ class BasicWorkspace extends Component{
     }
 
     handleNotebook = (record) => {
-        const path = record.status.endpoints.notebook+'?token='+record.spec.token;
-        return <a href={path} target="_blank" rel="noopener noreferrer">notebook</a>
+        if(record.status.phase==="Running"){
+          const path = record.status.endpoints.notebook+'?token='+record.spec.token;
+          return <a href={path} target="_blank" rel="noopener noreferrer">notebook</a>
+        }
+        else{
+          return <a href="javascript:void(0);">notebook</a>
+        }
     }
 
     handleDelete = (record) => () => {
@@ -134,6 +147,12 @@ class BasicWorkspace extends Component{
         const { metadata } = record;
         const { deleteWorkspace } = this.props;
         deleteWorkspace(metadata.name);
+    }
+
+    handleJobs = (record) => () => {
+        const { metadata } = record;
+        const { setWorkspace } = this.props;
+        setWorkspace(metadata.name);
     }
 
     handleOK = (e) => {
@@ -169,7 +188,7 @@ class BasicWorkspace extends Component{
 
     render() {
         const { Column } = Table;
-        const { workspaceList,form } = this.props;
+        const { workspaceList,form,setWorkspace } = this.props;
         const { visible } = this.state;
         const { getFieldDecorator } = form;
         const tokenPattern = new RegExp("([a-z]|[A-Z]|[0-9]){0,8}");
@@ -183,7 +202,14 @@ class BasicWorkspace extends Component{
                   <Column title="CreationTimestamp"  dataIndex="metadata.creationTimestamp"  key="creationTimestamp"/>
                   <Column title="Status"  dataIndex="status.phase"  key="status"/>
                   <Column title="Notebook" render={this.handleNotebook} key="notebook"/>
-                  <Column title="Operation"  render={(record)=><a href="javascript:void(0);" onClick={this.handleDelete(record)}>delete</a>}  key="operation"/>
+                  <Column title="Operation"  render={(record)=>(
+                    <span>
+                      <Link to="/dashboard/workspace/jobspace" onClick={this.handleJobs(record)}>jobs</Link>
+                      <Divider type="vertical"/>
+                      <a href="javascript:void(0);" onClick={this.handleDelete(record)}>delete</a>
+                    </span>
+                  )
+                }  key="operation"/>
                 </Table>
                 <Button type="primary" onClick={this.showNewWorkspaceModal}>New</Button>
                 <Modal

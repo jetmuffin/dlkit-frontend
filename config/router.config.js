@@ -46,13 +46,17 @@ export default [
           {
             path: '/dashboard/workspace',
             name: 'workspace',
-            component: './Dashboard/Workspace',            
+            component: './Dashboard/Workspace',    
           },
           {
             path: '/dashboard/storage',
             name: 'storage',
             component: './Dashboard/Storage',            
           },
+          {
+            path: '/dashboard/workspace/jobspace',
+            component: './Dashboard/JobList',
+          }
         ],
       },
       // forms
