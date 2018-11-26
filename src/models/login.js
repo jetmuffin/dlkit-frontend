@@ -24,13 +24,15 @@ export default {
     },
     *login({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
+      debugger
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       });
       // Login successfully
       if (response.status === 'ok') {
-        yield put(routerRedux.push('/dashboard/workspace'));
+        reloadAuthorized();
+        yield put(routerRedux.replace('/dashboard/workspace'));
       }
     },
 

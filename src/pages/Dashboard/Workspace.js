@@ -204,7 +204,7 @@ class BasicWorkspace extends Component{
                   <Column title="Notebook" render={this.handleNotebook} key="notebook"/>
                   <Column title="Operation"  render={(record)=>(
                     <span>
-                      <Link to={"/dashboard/workspace/jobspace/?workspacename="+record.metadata.name} onClick={this.handleJobs(record)}>jobs</Link>
+                      <Link to={"/dashboard/workspace/jobspace/"+record.metadata.name} onClick={this.handleJobs(record)}>jobs</Link>
                       <Divider type="vertical"/>
                       <a href="javascript:void(0);" onClick={this.handleDelete(record)}>delete</a>
                     </span>

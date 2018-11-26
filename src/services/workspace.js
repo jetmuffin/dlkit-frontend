@@ -3,39 +3,41 @@ import { getAuthority } from '@/utils/authority';
 
 export async function queryWorkspaces() {
   const userName = getAuthority();
-  debugger
   return request('/apis/workspace',{
     method: 'GET',
     headers: {
-      'User': 'test'
+      'User': userName[0]
     }
   });
 }
 
 export async function createWorkspace(params) {
+  const userName = getAuthority();
   return request('/apis/workspace',{
     method: 'POST',
     headers: {
-      'User': 'test'
+      'User': userName[0]
     },
     body: params
   });
 }
 
 export async function deleteWorkspace(params) {
+  const userName = getAuthority();
   return request(`/apis/workspace/${params}`,{
     method: 'DELETE',
     headers: {
-      'User': 'test'
+      'User': userName[0]
     }
   });
 }
 
 export async function putWorkspace(params) {
+  const userName = getAuthority();
   return request(`/apis/workspace/${params}`,{
     method: 'PUT',
     headers: {
-      'User': 'test'
+      'User': userName[0]
     }
   });
 }

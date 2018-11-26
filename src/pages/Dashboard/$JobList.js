@@ -67,10 +67,11 @@ class JobList extends PureComponent {
   }]
 
   componentDidMount() {
-    const { dispatch,workspace } = this.props;
+    const { dispatch,location } = this.props;
+    const pathToken = location.pathname.split("/");
     dispatch({
       type: 'job/fetch',
-      payload: workspace
+      payload: pathToken[4]
     });
   }
 

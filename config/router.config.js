@@ -19,7 +19,7 @@ export default [
     path: '/',
     component: '../layouts/BasicLayout',
     Routes: ['src/pages/Authorized'],
-    authority: ['admin', 'user'],
+    authority: ['admin', 'user', 'test', 'jetMuffin'],
     routes: [
       // dashboard
       { path: '/', redirect: '/user' },
@@ -54,8 +54,8 @@ export default [
             component: './Dashboard/Storage',            
           },
           {
-            path: '/dashboard/workspace/jobspace',
-            component: './Dashboard/JobList',
+            path: '/dashboard/workspace/jobspace/:workspacename',
+            component: './Dashboard/$JobList',
           }
         ],
       },
