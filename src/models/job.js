@@ -23,11 +23,11 @@ export default {
     },
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryJobs, payload);
-      const { jobStatuses } = response;
+      const { jobRuns } = response;
       debugger
       yield put({
         type: 'queryList',
-        payload: Array.isArray(jobStatuses) ? jobStatuses : [],
+        payload: Array.isArray(jobRuns) ? jobRuns : [],
       });
     },
     *appendFetch({ payload }, { call, put }) {

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Table, Button, Modal, Form, Select, InputNumber, Col, Input, Divider } from 'antd';
 import { connect } from 'dva';
 import Link from 'umi/link';
+import { withRouter } from 'dva/router';
 
 class SizeUnit extends Component{
     constructor(props) {
@@ -114,7 +115,6 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-@connect(mapStateToProps, mapDispatchToProps)
 class BasicWorkspace extends Component{
     state = {
         visible: false,
@@ -204,7 +204,7 @@ class BasicWorkspace extends Component{
                   <Column title="Notebook" render={this.handleNotebook} key="notebook"/>
                   <Column title="Operation"  render={(record)=>(
                     <span>
-                      <Link to="/dashboard/workspace/jobspace" onClick={this.handleJobs(record)}>jobs</Link>
+                      <Link to={"/dashboard/workspace/jobspace/?workspacename="+record.metadata.name} onClick={this.handleJobs(record)}>jobs</Link>
                       <Divider type="vertical"/>
                       <a href="javascript:void(0);" onClick={this.handleDelete(record)}>delete</a>
                     </span>
@@ -281,4 +281,4 @@ class BasicWorkspace extends Component{
 
 const Workspace = Form.create()(BasicWorkspace);
 
-export default Workspace;
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Workspace));
