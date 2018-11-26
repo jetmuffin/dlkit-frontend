@@ -28,21 +28,24 @@ export default [
         name: 'dashboard',
         icon: 'dashboard',
         routes: [
-          // {
-          //   path: '/dashboard/analysis',
-          //   name: 'analysis',
-          //   component: './Dashboard/Analysis',
-          // },
-          // {
-          //   path: '/dashboard/monitor',
-          //   name: 'monitor',
-          //   component: './Dashboard/Monitor',
-          // },
-          // {
-          //   path: '/dashboard/workplace',
-          //   name: 'workplace',
-          //   component: './Dashboard/Workplace',
-          // },
+          {
+            path: '/dashboard/analysis',
+            name: 'analysis',
+            hideInMenu:true,
+            component: './Dashboard/Analysis',
+          },
+          {
+            path: '/dashboard/monitor',
+            name: 'monitor',
+            hideInMenu:true,
+            component: './Dashboard/Monitor',
+          },
+          {
+            path: '/dashboard/workplace',
+            name: 'workplace',
+            hideInMenu:true,
+            component: './Dashboard/Workplace',
+          },
           {
             path: '/dashboard/workspace',
             name: 'workspace',
@@ -64,6 +67,8 @@ export default [
         path: '/form',
         icon: 'form',
         name: 'form',
+        hideChildrenInMenu:true,
+        hideInMenu:true,
         routes: [
           {
             path: '/form/basic-form',
@@ -111,6 +116,8 @@ export default [
         path: '/list',
         icon: 'table',
         name: 'list',
+        hideChildrenInMenu:true,
+        hideInMenu:true,
         routes: [
           {
             path: '/list/table-list',
@@ -159,6 +166,8 @@ export default [
         path: '/profile',
         name: 'profile',
         icon: 'profile',
+        hideChildrenInMenu:true,
+        hideInMenu:true,
         routes: [
           // profile
           {
@@ -178,6 +187,8 @@ export default [
         name: 'result',
         icon: 'check-circle-o',
         path: '/result',
+        hideChildrenInMenu:true,
+        hideInMenu:true,
         routes: [
           // result
           {
@@ -192,6 +203,8 @@ export default [
         name: 'exception',
         icon: 'warning',
         path: '/exception',
+        hideChildrenInMenu:true,
+        hideInMenu:true,
         routes: [
           // exception
           {
@@ -221,6 +234,8 @@ export default [
         name: 'account',
         icon: 'user',
         path: '/account',
+        hideChildrenInMenu:true,
+        hideInMenu:true,
         routes: [
           {
             path: '/account/center',
