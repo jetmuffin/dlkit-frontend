@@ -22,7 +22,7 @@ export default [
     authority: ['admin', 'user', 'test', 'jetMuffin'],
     routes: [
       // dashboard
-      { path: '/', redirect: '/user' },
+      { path: '/', redirect: '/dashboard/workplace' },
       {
         path: '/dashboard',
         name: 'dashboard',
