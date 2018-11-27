@@ -2,7 +2,7 @@ import request from '@/utils/request';
 import { getAuthority } from '@/utils/authority';
 
 export async function queryWorkspaces() {
-  const userName = getAuthority();
+  // const userName = getAuthority();
   return request('/apis/workspace',{
     method: 'GET',
     // headers: {
