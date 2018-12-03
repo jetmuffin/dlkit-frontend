@@ -28,6 +28,7 @@ export default {
   effects: {
     *loginWithLDAP({ payload },  { call, put, take }) {
       yield call(loginWithLDAP);
+      debugger
     },
     *login({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);

@@ -4,7 +4,15 @@ import styles from './Login.less';
 import logo from '../../assets/8899.png';
 import { connect } from 'dva';
 
-@connect()
+const mapStateToProps = (state) => {
+    const {clientId,clientSecret } = state.login;
+    return {
+        clientId: clientId,
+        clientSecret: clientSecret
+    }
+}
+
+@connect(mapStateToProps)
 class Login extends Component{
     handleLogin = () => {
         const {dispatch} = this.props;
