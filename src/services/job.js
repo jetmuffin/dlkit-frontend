@@ -2,28 +2,21 @@ import request from '@/utils/request';
 import { getAuthority } from '@/utils/authority';
 
 export async function queryJobs(params) {
-    // const userName = getAuthority();
-    // debugger
+    const token = localStorage.getItem('access_token');
     return request(`/apis/workspace/${params}`,{
       method: 'GET',
-      // headers: {
-      //   'User': userName[0]
-      // }
       headers: {
-        'User': 'test'
+        'Authorization': token
       }
     });
 }
 
 export async function queryLogs(params) {
-  // const userName = getAuthority();
+  const token = localStorage.getItem('access_token');
   return request(`/apis/log/${params}`,{
     method: 'GET',
-    // headers: {
-    //   'User': userName[0]
-    // }
     headers: {
-      'User': 'test'
+      'Authorization': token
     }
   })
 }
