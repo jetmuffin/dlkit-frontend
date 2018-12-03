@@ -1,40 +1,23 @@
 import React, {Component} from 'react';
-import { Icon, Button } from 'antd';
-import styles from './Login.less'
+import { Icon, Button, Avatar } from 'antd';
+import styles from './Login.less';
+import logo from '../../assets/8899.png';
 import { connect } from 'dva';
 
-const mapStateToProps = (state) => {
-    const {clientId,clientSecret } = state.login;
-    return {
-        clientId: clientId,
-        clientSecret: clientSecret
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    const loginWithGithub = (clientId) => {
-        dispatch({ type: "login/loginWithGithub",payload: clientId});
-    }
-    return {
-        loginWithGithub
-    }
-}
-
-@connect(mapStateToProps,mapDispatchToProps)
+@connect()
 class Login extends Component{
-    state = {}
-
     handleLogin = () => {
-        const { loginWithGithub,clientId } = this.props;
-        loginWithGithub(clientId);
+        const {dispatch} = this.props;
+        dispatch({ type: "login/loginWithLDAP" });
     }
 
     render() {
         return (
             <div className={styles.box}>
                 <div className={styles.unit}>
-                    <Icon type="github" theme="outlined" style={{fontSize: '128px'}}/>
-                    <Button type="primary" size="large" onClick={this.handleLogin}>Login with github account</Button>
+                    {/* <Icon logo={logo} theme="outlined" style={{fontSize: '128px'}}/> */}
+                    <img src={logo} height="128px" width="256px"/>
+                    <Button type="primary" size="large" onClick={this.handleLogin}>Login with LDAP account</Button>
                 </div>
             </div>
         );

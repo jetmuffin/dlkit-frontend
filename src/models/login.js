@@ -4,23 +4,30 @@ import { fakeAccountLogin, getFakeCaptcha } from '@/services/api';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
-import { loginWithGithub, getCookie } from '@/services/login';
+import { loginWithLDAP } from '@/services/login';
 
 export default {
   namespace: 'login',
 
   state: {
     status: undefined,
-    clientId: "837fdc3e941ffc687d3d",
-    clientSecret: "5862a739b27a782081ceb452d9a236b2a45b6ac2",
-    code: ""
+  },
+  
+  subscriptions: {
+    setup({dispatch,history}){
+      history.listen((path)=>{
+        if(path.pathname==="/"&&path.query&&path.query.token){
+          console.log(path.query.token);
+          localStorage.setItem('access_token',path.query.token);
+          dispatch(routerRedux.replace('/dashboard/workspace'));
+        }
+      })
+    }
   },
 
   effects: {
-    *loginWithGithub({ payload },  { call, put, take }) {
-      const path = "https://github.com/login/oauth/authorize" + '?client_id=' + payload;
-      const [,response] = yield [call(loginWithGithub,path),take(getCookie)];
-      debugger
+    *loginWithLDAP({ payload },  { call, put, take }) {
+      yield call(loginWithLDAP);
     },
     *login({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
