@@ -16,9 +16,9 @@ export default {
   subscriptions: {
     setup({dispatch,history}){
       history.listen((path)=>{
-        if(path.pathname==="/"&&path.query&&path.query.token){
-          console.log(path.query.token);
-          localStorage.setItem('access_token',path.query.token);
+        if(path.pathname==="/"&&path.query&&path.query.access_token){
+          console.log(path.query.access_token);
+          localStorage.setItem('access_token',path.query.access_token);
           dispatch(routerRedux.replace('/dashboard/workspace'));
         }
       })
