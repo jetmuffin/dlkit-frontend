@@ -65,6 +65,10 @@ export default {
       target: 'http://dlkit.njuics.cn/',
       changeOrigin: true,
     },
+    '/token': {
+      target: 'http://114.212.189.147:10167/',
+      changeOrigin: true,
+    }
   },
   ignoreMomentLocale: true,
   lessLoaderOptions: {

@@ -82,17 +82,21 @@ class JobList extends PureComponent {
     })
   }
 
+  getLog = (log) => {
+    let parray = []
+    log.forEach(element => {
+      parray.push(<p>{element}</p>)
+    });
+    return parray
+  }
+
   logInfo = (log) => {
     Modal.info({
       title: 'Log',
-      content:     <List
-      size="small"
-      header={<div>Log start</div>}
-      footer={<div>Bottom</div>}
-      bordered
-      dataSource={log}
-      renderItem={item => (<List.Item>{item}</List.Item>)}
-    />
+      content: 
+      <span>
+        {this.getLog(log)}
+      </span>
     })
   }
 
