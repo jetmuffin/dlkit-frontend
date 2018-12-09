@@ -176,7 +176,7 @@ class BasicLayout extends React.PureComponent {
 
   getPageTitle = pathname => {
     const currRouterData = this.matchParamsPath(pathname);
-    debugger
+    // debugger
     if (!currRouterData) {
       return 'DLKIT';
     }

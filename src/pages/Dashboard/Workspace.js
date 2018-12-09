@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
-import { Table, Button, Modal, Form, Select, InputNumber, Col, Input, Divider } from 'antd';
+import { Table, Button, Modal, Form, Select, InputNumber, Row, Col, Input, Divider, Card, Tag, Popover } from 'antd';
 import { connect } from 'dva';
 import Link from 'umi/link';
 import { withRouter } from 'dva/router';
+import moment from 'moment';
+import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import styles from './JobList.less';
 
 class SizeUnit extends Component{
     constructor(props) {
@@ -181,37 +184,81 @@ class BasicWorkspace extends Component{
         })
     }
 
+    getJobspecContent = (jobSpec) => {
+        debugger
+        return (
+        <div>
+            <p>{"command: " + jobSpec.command}</p>
+            <p>{"ps: " + jobSpec.ps}</p>
+            <p>{"trainer: " + jobSpec.trainer}</p>
+            <p>{"worker: " + jobSpec.worker}</p>
+        </div>
+    )}
+
     componentDidMount() {
         const { queryWorkspaceList } = this.props;
         queryWorkspaceList();
     }
 
     render() {
+        const Info = ({ title, value, bordered }) => (
+            <div className={styles.headerInfo}>
+              <span>{title}</span>
+              <p>{value}</p>
+              {bordered && <em />}
+            </div>
+          );
         const { Column } = Table;
         const { workspaceList,form,setWorkspace } = this.props;
+        // debugger
         const { visible } = this.state;
         const { getFieldDecorator } = form;
         const tokenPattern = new RegExp("([a-z]|[A-Z]|[0-9]){0,8}");
         return(
             <div>
-                <Table dataSource={workspaceList} rowKey={(record)=>record.metadata.name}>
-                  <Column title="Name"  dataIndex="metadata.name"  key="name"/>
-                  <Column title="Owner"  dataIndex="spec.owner"  key="owner"/>
-                  <Column title="Size"  dataIndex="spec.size"  key="size"/>
-                  <Column title="Description"  dataIndex="spec.description"  key="description"/>
-                  <Column title="CreationTimestamp"  dataIndex="metadata.creationTimestamp"  key="creationTimestamp"/>
-                  <Column title="Status"  dataIndex="status.phase"  key="status"/>
-                  <Column title="Notebook" render={this.handleNotebook} key="notebook"/>
-                  <Column title="Operation"  render={(record)=>(
-                    <span>
-                      <Link to={"/dashboard/workspace/jobspace/"+record.metadata.name} onClick={this.handleJobs(record)}>jobs</Link>
-                      <Divider type="vertical"/>
-                      <a href="javascript:void(0);" onClick={this.handleDelete(record)}>delete</a>
-                    </span>
-                  )
-                }  key="operation"/>
-                </Table>
-                <Button type="primary" onClick={this.showNewWorkspaceModal}>New</Button>
+                <PageHeaderWrapper title="Current Workspace">
+                <div className={styles.standardList}>
+                    <Card bordered={true}>
+                        <Row>
+                            <Col sm={8} xs={24}>
+                                <Info title="我的待办" value="8个任务" bordered />
+                            </Col>
+                            <Col sm={8} xs={24}>
+                                <Info title="本周任务平均处理时间" value="32分钟" bordered />
+                            </Col>
+                            <Col sm={8} xs={24}>
+                                <Info title="本周完成任务数" value="24个任务" />
+                            </Col>
+                        </Row>
+                    </Card>
+
+                    <Card 
+                        bordered={true} 
+                        className={styles.listCard}           
+                        style={{ marginTop: 24 }}
+                        bodyStyle={{ padding: '0 32px 40px 32px' }}
+                    >
+                        <Table dataSource={workspaceList} rowKey={(record)=>record.metadata.name}>
+                            <Column title="Name"  dataIndex="metadata.name"  key="name"/>
+                            <Column title="Owner"  dataIndex="spec.owner"  key="owner"/>
+                            <Column title="Size"  dataIndex="spec.size"  key="size"/>
+                            <Column title="Description"  dataIndex="spec.description"  key="description"/>
+                            <Column title="CreationTimestamp"  dataIndex="metadata"  key="creationTimestamp" render={metadata=><p>{moment(metadata.creationTimestamp.replace('Z','')).format('YYYY-MM-DD HH:mm')}</p>}/>
+                            <Column title="Status"  dataIndex="status"  key="status" render={status=>status.phase==="Running"?<Tag color='blue'>{status.phase}</Tag>:<Tag color='red'>{status.phase}</Tag>}/>
+                            <Column title="Notebook" render={this.handleNotebook} key="notebook"/>
+                            <Column title="Jobspec" dataIndex="spec" render={spec=><Popover content={this.getJobspecContent(spec.jobSpec)} title="jobSpec"><a href="javascript:void(0);">show</a></Popover>}/>
+                            <Column title="Operation"  render={(record)=>(
+                                <span>
+                                <Link to={"/dashboard/workspace/jobspace/"+record.metadata.name} onClick={this.handleJobs(record)}>jobs</Link>
+                                <Divider type="vertical"/>
+                                <a href="javascript:void(0);" onClick={this.handleDelete(record)}>delete</a>
+                                </span>
+                            )}  key="operation"/>
+                        </Table>
+                        <Button type="primary" onClick={this.showNewWorkspaceModal}>New</Button>
+                    </Card>
+                    </div>
+                </PageHeaderWrapper>
                 <Modal
                   title="New Workspace"
                   visible={ visible }
