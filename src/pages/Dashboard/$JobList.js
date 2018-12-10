@@ -81,7 +81,18 @@ class JobList extends PureComponent {
   },{
     title: 'status',
     dataIndex: 'status',
-    render: status=>status==='SUCCEEDED'?<Tag color='green'>{status}</Tag>:<Tag color='red'>{status}</Tag>
+    render: status=>{
+      let color
+      switch(status){
+        case 'SUCCEEDED': color="green";break;
+        case 'FAILED': color="red";break;
+        case 'PENDING': color="orange";break;
+        case 'UNKNOWN': color="cyan";break;
+        case 'RUNNING': color="blue";break;
+        default: break;
+      }
+      return <Tag color={color}>{status}</Tag>
+    }
   },{
     title: 'Operation',
     render: record=>(
@@ -270,7 +281,7 @@ class JobList extends PureComponent {
             style={{ marginTop: 24 }}
             bodyStyle={{ padding: '0 32px 40px 32px' }}
           >
-            <Table dataSource={list} columns={this.JobColumns} key={item=>item.name}/>
+            <Table dataSource={list} columns={this.JobColumns} rowKey={item=>item.name}/>
           </Card>
         </div>
       </PageHeaderWrapper>
