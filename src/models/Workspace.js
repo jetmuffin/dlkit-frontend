@@ -16,7 +16,6 @@ export default{
         *createNewWorkspace({ payload }, sagaEffects) {
             const { call, put } = sagaEffects;
             const response = yield call(createWorkspace, payload);
-            debugger
             const { workspaces } = yield call(queryWorkspaces);
             yield put({ type: "updateList", payload: workspaces });
         },

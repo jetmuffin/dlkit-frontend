@@ -5,6 +5,7 @@ import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
 import { loginWithLDAP, exchangeForAccess_token } from '@/services/login';
+import defaultSettings from '@/defaultSettings';
 
 export default {
   namespace: 'login',
@@ -37,12 +38,16 @@ export default {
       yield put(routerRedux.replace(`/?access_token=${response.id_token}`))
     },
     *loginWithLDAP({ payload },  { call, put, take }) {
-      yield call(loginWithLDAP);
-      debugger
+      const {dlkitDebug} = defaultSettings
+      if(dlkitDebug===true){
+        yield put(routerRedux.replace('/dashboard/workspace'));
+      }
+      else{
+        yield call(loginWithLDAP);
+      }
     },
     *login({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
-      debugger
       yield put({
         type: 'changeLoginStatus',
         payload: response,

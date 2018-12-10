@@ -1,22 +1,20 @@
 import request from '@/utils/request';
 import { getAuthority } from '@/utils/authority';
+import defaultSettings from '@/defaultSettings';
+import { getAuthRequestHeader } from '@/utils/DlkitDebug';
+
+const {dlkitDebug} = defaultSettings;
 
 export async function queryJobs(params) {
-    const token = localStorage.getItem('access_token');
     return request(`/apis/workspace/${params}`,{
       method: 'GET',
-      headers: {
-        'Authorization': token
-      }
+      headers: getAuthRequestHeader()
     });
 }
 
 export async function queryLogs(params) {
-  const token = localStorage.getItem('access_token');
   return request(`/apis/log/${params}`,{
     method: 'GET',
-    headers: {
-      'Authorization': token
-    }
+    headers: getAuthRequestHeader()
   })
 }
