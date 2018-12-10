@@ -18,15 +18,17 @@ class Login extends Component{
         const {dispatch} = this.props;
         dispatch({ type: "login/loginWithLDAP" });
     }
+    componentWillMount() {
+        this.handleLogin()
+    }
 
     render() {
         return (
             <div className={styles.box}>
-                <div className={styles.unit}>
-                    {/* <Icon logo={logo} theme="outlined" style={{fontSize: '128px'}}/> */}
+                {/* <div className={styles.unit}>
                     <img src={logo} height="128px" width="256px"/>
                     <Button type="primary" size="large" onClick={this.handleLogin}>Login with LDAP account</Button>
-                </div>
+                </div> */}
             </div>
         );
     }
