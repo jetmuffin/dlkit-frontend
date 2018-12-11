@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { Row, Col, Card, Avatar } from 'antd';
+import { Row, Col, Card, Avatar, List, Tooltip, Icon, Dropdown, Menu } from 'antd';
 import styles from './Workplace.less';
 import logo from '../../assets/dataset.svg';
 import Link from 'umi/link';
+import Ellipsis from '@/components/Ellipsis';
 
 
 @connect(({dataset})=>({
@@ -31,32 +32,71 @@ class Storage extends Component{
     }
 
     render() {
+        const itemMenu = (
+            <Menu>
+              <Menu.Item>
+                <a target="_blank" rel="noopener noreferrer" href="#">
+                  1st menu item
+                </a>
+              </Menu.Item>
+              <Menu.Item>
+                <a target="_blank" rel="noopener noreferrer" href="#">
+                  2nd menu item
+                </a>
+              </Menu.Item>
+              <Menu.Item>
+                <a target="_blank" rel="noopener noreferrer" href="#">
+                  3d menu item
+                </a>
+              </Menu.Item>
+            </Menu>
+          );
+
         const {list} = this.props;
-        console.log(list)
         return(
             <PageHeaderWrapper title="Current Datasets">
                 <Row gutter={24}>
                     <Col xl={24} lg={24} md={24} sm={24} xs={24}>
-                        <Card
-                            style={{ marginBottom: 24 }}
-                            bordered={false}
-                            bodyStyle={{ padding: 0 }}>
-                            {list.map(item => (
-                                <Card.Grid className={styles.projectGrid} key={item.metadata.name}>
-                                    <Card bodyStyle={{ padding: 0 }} bordered={false}>
+                        <List
+                            rowKey="id"
+                            style={{ marginTop: 24 }}
+                            grid={{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }}
+                            dataSource={list}
+                            renderItem={item => (
+                                <List.Item key={item.id}>
+                                    <Card
+                                        hoverable
+                                        bodyStyle={{ paddingBottom: 20 }}
+                                        actions={[
+                                        <Tooltip title="下载">
+                                            <a href={item.status.endpoint} target="_blank" rel="noopener noreferer">
+                                                <Icon type="download" />
+                                            </a>
+                                        </Tooltip>,
+                                        <Tooltip title="编辑">
+                                            <Icon type="edit" />
+                                        </Tooltip>,
+                                        <Tooltip title="分享">
+                                            <Icon type="share-alt" />
+                                        </Tooltip>,
+                                        <Dropdown overlay={itemMenu}>
+                                            <Icon type="ellipsis" />
+                                        </Dropdown>,
+                                        ]}
+                                    >
                                     <Card.Meta
-                                        title={
-                                        <div className={styles.cardTitle}>
-                                            <Avatar size="large" src={logo} />
-                                            <a href={item.status.endpoint} target="_blank" rel="noopener noreferrer">{item.metadata.name}</a>
-                                        </div>
+                                        avatar={<img alt="" className={styles.cardAvatar} src={item.spec.thumbnailURL} />}
+                                        title={<a>{item.metadata.name}</a>}
+                                        description={
+                                        <Ellipsis className={styles.item} lines={3}>
+                                            {item.spec.description}
+                                        </Ellipsis>
                                         }
-                                        description={this.getDatasetDescription(item)}
                                     />
-                                    </Card>
-                                </Card.Grid>
-                            ))}
-                        </Card>
+                                </Card>
+                            </List.Item>
+                            )}
+                        />
                     </Col>
                 </Row>
             </PageHeaderWrapper>
