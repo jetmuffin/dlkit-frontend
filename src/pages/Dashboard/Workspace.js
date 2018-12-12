@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Table, Button, Modal, Form, Select, InputNumber, Row, Col, Input, Divider, Card, Tag, Popover, Checkbox } from 'antd';
+import { Table, Button, Modal, Form, Select, InputNumber, Row, Col, Input, Divider, Card, Tag, Popover, Checkbox, Badge, Radio  } from 'antd';
 import { connect } from 'dva';
 import Link from 'umi/link';
 import { withRouter } from 'dva/router';
@@ -7,6 +7,10 @@ import moment from 'moment';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './JobList.less';
 import CheckboxGroup from '_antd@3.11.0@antd/lib/checkbox/Group';
+
+const RadioGroup = Radio.Group;
+const RadioButton = Radio.Button;
+const { Search } = Input;
 
 class SizeUnit extends Component{
     constructor(props) {
@@ -210,12 +214,24 @@ class BasicWorkspace extends Component{
               {bordered && <em />}
             </div>
           );
+
+        const extraContent = (
+            <div className={styles.extraContent}>
+              <RadioGroup defaultValue="all">
+                <RadioButton value="all">全部</RadioButton>
+                <RadioButton value="progress">进行中</RadioButton>
+                <RadioButton value="waiting">等待中</RadioButton>
+              </RadioGroup>
+              <Search className={styles.extraContentSearch} placeholder="请输入" onSearch={() => ({})} />
+            </div>
+          );
         const { Column } = Table;
         const { workspaceList,form,setWorkspace } = this.props;
         // debugger
         const { visible } = this.state;
         const { getFieldDecorator } = form;
         const tokenPattern = new RegExp("([a-z]|[A-Z]|[0-9]){0,8}");
+        const statusMap = {'Unknown':'default', 'Pending':'processing', 'Running':'success', 'Failed':'error'};
         return(
             <div>
                 <PageHeaderWrapper title="Current Workspace">
@@ -239,6 +255,7 @@ class BasicWorkspace extends Component{
                         className={styles.listCard}           
                         style={{ marginTop: 24 }}
                         bodyStyle={{ padding: '0 32px 40px 32px' }}
+                        extra={extraContent}
                     >
                         <Table dataSource={workspaceList} rowKey={(record)=>record.metadata.name}>
                             <Column title="Name"  dataIndex="metadata.name"  key="name"/>
@@ -247,7 +264,7 @@ class BasicWorkspace extends Component{
                                 let timeStr = metadata.creationTimestamp.replace('Z','');
                                 timeStr = timeStr.replace('T',' ');
                                 return moment(timeStr).utcOffset('-0800').format('YYYY-MM-DD HH:mm')}}/>
-                            <Column title="Status"  dataIndex="status"  key="status" render={status=>status.phase==="Running"?<Tag color='blue'>{status.phase}</Tag>:<Tag color='red'>{status.phase}</Tag>}/>
+                            <Column title="Status"  dataIndex="status"  key="status" render={status=><Badge status={statusMap[status.phase]} text={status.phase} />}/>
                             <Column title="Notebook" render={this.handleNotebook} key="notebook"/>
                             <Column title="Jobspec" dataIndex="spec" render={spec=><Popover content={this.getJobspecContent(spec.jobSpec)} title="jobSpec"><a href="javascript:void(0);">show</a></Popover>}/>
                             <Column title="Operation"  render={(record)=>(
