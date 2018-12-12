@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import { Table, Button, Modal, Form, Select, InputNumber, Row, Col, Input, Divider, Card, Tag, Popover } from 'antd';
+import { Table, Button, Modal, Form, Select, InputNumber, Row, Col, Input, Divider, Card, Tag, Popover, Checkbox } from 'antd';
 import { connect } from 'dva';
 import Link from 'umi/link';
 import { withRouter } from 'dva/router';
 import moment from 'moment';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './JobList.less';
+import CheckboxGroup from '_antd@3.11.0@antd/lib/checkbox/Group';
 
 class SizeUnit extends Component{
     constructor(props) {
@@ -146,7 +147,7 @@ class BasicWorkspace extends Component{
 
     handleDelete = (record) => () => {
         console.log(record);
-        debugger
+        // debugger
         const { metadata } = record;
         const { deleteWorkspace } = this.props;
         deleteWorkspace(metadata.name);
@@ -166,8 +167,9 @@ class BasicWorkspace extends Component{
                   metadata: { name:values.name },
                   spec: {
                       size:values.size,
-                      jobSpec: { trainer: values.frame }
-                    }
+                      jobSpec: { trainer: values.frame },
+                      dataSets: values.datasets
+                    },
               }
               createNewWorkspace(params);
             //   console.log('Received values of form: ', params);
@@ -185,7 +187,7 @@ class BasicWorkspace extends Component{
     }
 
     getJobspecContent = (jobSpec) => {
-        debugger
+        // debugger
         return (
         <div>
             <p>{"command: " + jobSpec.command}</p>
@@ -243,7 +245,10 @@ class BasicWorkspace extends Component{
                             <Column title="Owner"  dataIndex="spec.owner"  key="owner"/>
                             <Column title="Size"  dataIndex="spec.size"  key="size"/>
                             <Column title="Description"  dataIndex="spec.description"  key="description"/>
-                            <Column title="CreationTimestamp"  dataIndex="metadata"  key="creationTimestamp" render={metadata=><p>{moment(metadata.creationTimestamp.replace('Z','')).format('YYYY-MM-DD HH:mm')}</p>}/>
+                            <Column title="CreationTimestamp"  dataIndex="metadata"  key="creationTimestamp" render={metadata=>{
+                                let timeStr = metadata.creationTimestamp.replace('Z','');
+                                timeStr = timeStr.replace('T',' ');
+                                return <p>{moment(timeStr).utcOffset('-0800').format('YYYY-MM-DD HH:mm')}</p>}}/>
                             <Column title="Status"  dataIndex="status"  key="status" render={status=>status.phase==="Running"?<Tag color='blue'>{status.phase}</Tag>:<Tag color='red'>{status.phase}</Tag>}/>
                             <Column title="Notebook" render={this.handleNotebook} key="notebook"/>
                             <Column title="Jobspec" dataIndex="spec" render={spec=><Popover content={this.getJobspecContent(spec.jobSpec)} title="jobSpec"><a href="javascript:void(0);">show</a></Popover>}/>
@@ -297,6 +302,16 @@ class BasicWorkspace extends Component{
                       <Select.Option value="mxnet">mxnet</Select.Option>
                       <Select.Option value="standalone">standalone</Select.Option>
                     </Select>
+                    )}
+                  </Form.Item>
+                  <Form.Item label="Datasets" {...this.formLayout}>
+                    {getFieldDecorator('datasets',{
+                        rules: [{
+                            required: false,
+                            message: "Please select your datasets",
+                        }],
+                    })(
+                        <CheckboxGroup options={['mnist']}/>
                     )}
                   </Form.Item>
                   {/* <Form.Item>

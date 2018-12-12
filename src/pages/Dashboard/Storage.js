@@ -19,17 +19,17 @@ class Storage extends Component{
         })
     }
 
-    getDatasetDescription = (item) => {
-        const description = item.spec.description!==""?item.spec.description:"No description";
-        const readonly = item.spec.readonly!==undefined?"True":"False";
-        return (
-            <span>
-                <p>{"Size: "+item.spec.size}</p>
-                <p>{"Description: "+ description}</p>
-                <p>{"ReadOnly: " + readonly}</p>
-            </span>
-        )
-    }
+    // getDatasetDescription = (item) => {
+    //     const description = item.spec.description!==""?item.spec.description:"No description";
+    //     const readonly = item.spec.readonly!==undefined?"True":"False";
+    //     return (
+    //         <span>
+    //             <p>{"Size: "+item.spec.size}</p>
+    //             <p>{"Description: "+ description}</p>
+    //             <p>{"ReadOnly: " + readonly}</p>
+    //         </span>
+    //     )
+    // }
 
     render() {
         const itemMenu = (
