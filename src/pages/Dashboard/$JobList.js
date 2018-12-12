@@ -76,14 +76,16 @@ class JobList extends PureComponent {
     render: startTime=>{
       let timeStr = startTime.replace('Z','');
       timeStr = timeStr.replace('T',' ');
-      return <p>{moment(timeStr).utcOffset('-0800').format('YYYY-MM-DD HH:mm')}</p>}
+      return moment(timeStr).utcOffset('-0800').format('YYYY-MM-DD HH:mm')}
   },{
     title: 'completeTime',
     dataIndex: 'completeTime',
     render: completeTime=>{
+      if(completeTime===undefined)
+        return "Job unfinished"
       let timeStr = completeTime.replace('Z','');
       timeStr = timeStr.replace('T',' ');
-      return <p>{moment(timeStr).utcOffset('-0800').format('YYYY-MM-DD HH:mm')}</p>}
+      return moment(timeStr).utcOffset('-0800').format('YYYY-MM-DD HH:mm')}
   },{
     title: 'status',
     dataIndex: 'status',

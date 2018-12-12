@@ -242,13 +242,11 @@ class BasicWorkspace extends Component{
                     >
                         <Table dataSource={workspaceList} rowKey={(record)=>record.metadata.name}>
                             <Column title="Name"  dataIndex="metadata.name"  key="name"/>
-                            <Column title="Owner"  dataIndex="spec.owner"  key="owner"/>
                             <Column title="Size"  dataIndex="spec.size"  key="size"/>
-                            <Column title="Description"  dataIndex="spec.description"  key="description"/>
                             <Column title="CreationTimestamp"  dataIndex="metadata"  key="creationTimestamp" render={metadata=>{
                                 let timeStr = metadata.creationTimestamp.replace('Z','');
                                 timeStr = timeStr.replace('T',' ');
-                                return <p>{moment(timeStr).utcOffset('-0800').format('YYYY-MM-DD HH:mm')}</p>}}/>
+                                return moment(timeStr).utcOffset('-0800').format('YYYY-MM-DD HH:mm')}}/>
                             <Column title="Status"  dataIndex="status"  key="status" render={status=>status.phase==="Running"?<Tag color='blue'>{status.phase}</Tag>:<Tag color='red'>{status.phase}</Tag>}/>
                             <Column title="Notebook" render={this.handleNotebook} key="notebook"/>
                             <Column title="Jobspec" dataIndex="spec" render={spec=><Popover content={this.getJobspecContent(spec.jobSpec)} title="jobSpec"><a href="javascript:void(0);">show</a></Popover>}/>
